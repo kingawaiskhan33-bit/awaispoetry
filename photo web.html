@@ -1,0 +1,230 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>AWAIS PHOTO GALLERY</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg,#050816,#111b35,#250b3d);
+    color: white;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+/* HEADER */
+
+header {
+    text-align: center;
+    padding: 35px 15px;
+}
+
+header h1 {
+    font-size: 35px;
+    color: #00eaff;
+    letter-spacing: 3px;
+    text-shadow: 0 0 10px #00eaff,
+                 0 0 25px #008cff;
+    animation: glow 2s infinite alternate;
+}
+
+header p {
+    margin-top: 12px;
+    color: #ccc;
+    letter-spacing: 2px;
+}
+
+@keyframes glow {
+    from {
+        text-shadow: 0 0 10px #00eaff;
+    }
+    to {
+        text-shadow: 0 0 30px #00eaff,
+                     0 0 50px #8b00ff;
+    }
+}
+
+/* GALLERY */
+
+.gallery {
+    width: 95%;
+    max-width: 1300px;
+    margin: 20px auto 50px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit,minmax(180px,1fr));
+    gap: 20px;
+}
+
+.gallery img {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    border-radius: 16px;
+    cursor: pointer;
+    border: 2px solid rgba(0,234,255,0.25);
+    box-shadow: 0 5px 20px rgba(0,0,0,0.5);
+    opacity: 0;
+    animation: appear 0.8s ease forwards;
+    transition: all 0.4s ease;
+}
+
+/* IMAGE ANIMATION */
+
+@keyframes appear {
+    from {
+        opacity: 0;
+        transform: translateY(40px) scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.gallery img:hover {
+    transform: scale(1.07) rotate(1deg);
+    border-color: #00eaff;
+    box-shadow: 0 0 15px #00eaff,
+                0 0 30px #8b00ff;
+}
+
+/* FULL SCREEN PREVIEW */
+
+#preview {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    inset: 0;
+    background: rgba(0,0,0,0.95);
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    animation: fade 0.3s;
+}
+
+#preview img {
+    max-width: 95%;
+    max-height: 85vh;
+    object-fit: contain;
+    border-radius: 15px;
+    box-shadow: 0 0 30px #00eaff;
+    animation: zoom 0.4s;
+}
+
+#close {
+    position: absolute;
+    top: 20px;
+    right: 25px;
+    font-size: 40px;
+    color: white;
+    cursor: pointer;
+}
+
+@keyframes zoom {
+    from {transform: scale(0.7);}
+    to {transform: scale(1);}
+}
+
+@keyframes fade {
+    from {opacity: 0;}
+    to {opacity: 1;}
+}
+
+/* FOOTER */
+
+footer {
+    text-align: center;
+    padding: 25px;
+    color: #aaa;
+    border-top: 1px solid #333;
+}
+
+/* MOBILE */
+
+@media(max-width:600px) {
+    header h1 {
+        font-size: 25px;
+    }
+
+    .gallery {
+        grid-template-columns: repeat(2,1fr);
+        gap: 12px;
+    }
+
+    .gallery img {
+        height: 170px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>AWAIS PHOTO GALLERY</h1>
+    <p>WELCOME TO MY WEBSITE ❤️</p>
+</header>
+
+<div class="gallery" id="gallery"></div>
+
+<!-- IMAGE PREVIEW -->
+
+<div id="preview" onclick="closePreview()">
+    <span id="close">&times;</span>
+    <img id="bigImage" src="" alt="Preview">
+</div>
+
+<footer>
+    <p>© 2026 AWAIS WEBSITE | All Rights Reserved ❤️</p>
+</footer>
+
+<script>
+
+// AUTOMATICALLY LOAD 41 IMAGES
+
+const gallery = document.getElementById("gallery");
+
+for(let i = 1; i <= 41; i++) {
+
+    const img = document.createElement("img");
+
+    img.src = i + ".jpg";
+    img.alt = "Awais Photo " + i;
+    img.loading = "lazy";
+
+    img.style.animationDelay = (i * 0.06) + "s";
+
+    img.onclick = function() {
+        document.getElementById("bigImage").src = this.src;
+        document.getElementById("preview").style.display = "flex";
+    };
+
+    gallery.appendChild(img);
+}
+
+// CLOSE PREVIEW
+
+function closePreview() {
+    document.getElementById("preview").style.display = "none";
+}
+
+// PREVENT IMAGE CLICK FROM CLOSING PREVIEW
+
+document.getElementById("bigImage").onclick = function(event) {
+    event.stopPropagation();
+};
+
+</script>
+
+</body>
+</html>
